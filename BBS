@@ -1,0 +1,121 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+/*Declaring strucuter of date*/ 
+struct date{
+	int day,month, year;
+	};
+	/*Declaring structure*/
+ struct studrecord{
+ 	char name[64];
+ 	struct date dob;
+ 	int height;
+ 	float weight;
+ 	struct studrecord *next;
+ 	}s,temp;
+ 	/*Function to scan all the information of student*/
+ struct studrecord *scan(int n){
+
+	if(n==0)       /*Giving condition n=0 its NULL*/
+	return NULL;
+	
+	    	struct studrecord *s;
+	s=malloc(sizeof(struct studrecord));   /*Allocating the size*/
+scanf("%s",s->name);                        /*scanning name*/
+scanf("%02d%02d%d",&s->dob.day,&s->dob.month,&s->dob.year);      /*Scaning Date of Birth*/
+scanf("%d",&s->height);                                       /*Scaning Height*/
+scanf("%f",&s->weight);                                      /**Scaning weight*/
+(s->next)=scan(n-1);                                          /* Using recursion and again calling the function*/
+return s;                                                    /*Returning the list*/
+ 	 }
+void swap(struct studrecord *s1,struct studrecord *s2)      /*Function to swap the lists*/    
+{                                           /*Redeclaring the structure for temp*/
+    struct studrecord temp;
+   strcpy(temp.name,s1->name);
+  temp.dob=s1->dob;
+  temp.height=s1->height;
+  temp.weight=s1->weight;
+  
+  
+  strcpy(s1->name,s2->name);
+  s1->dob=s2->dob;
+  s1->height=s2->height;
+  s1->weight=s2->weight;
+  
+  strcpy(s2->name,temp.name);
+  s2->dob=temp.dob;
+  s2->height=temp.height;
+  s2->weight=temp.weight;
+
+    /*Swapping function ends here*/
+  
+ int compare(struct date dob1,struct date dob2)              /*Function to compare  Date of Birth*/
+ {
+
+
+ if(dob1.year>dob2.year)                                  /*First check for year*/
+ return 1;                                                  /*If dob1>dob2 Retun 1 else return -1*/     
+ if(dob1.year<dob2.year)
+ return -1;
+ if(dob1.month>dob2.month)                              /*If tear is same do it for month*/
+ return 1;
+ if(dob1.month<dob2.month)
+ return -1;
+ {if(dob1.day>dob2.day)                         /*If month is also same do it for day*/
+  return 1;
+ if(dob1.day<dob2.day)
+ return -1;
+ if(dob1.day==dob2.day)                                   /*If both nare same return 0*/
+return 0;
+	}
+	/*Compare function ends here*/
+  
+ }
+  void bubblesort(struct studrecord *s,int N)   /*Sort the Date of Birth using Bubblesort*/
+  {
+  int i,condition;                                                /*Declaring the Variables*/
+  struct studrecord *head;
+  head=(struct studrecord *)malloc(sizeof(struct studrecord));	
+  head=s;                                                        /*Assigning head to s*/
+  for(i=0;i<N;i++){   
+      while(s->next!=NULL)                                           /*Running loop fon n values of entries*/
+  {                                          /*start the while loop if list is not NULL*/ 
+  condition=compare(s->dob,s->next->dob);                         /*asigning compare function to conditionCalling the function comapre*/
+  if(condition==-1)                                         /*condition=-1 that means 2nd value is greter than first one so link next node*/
+    s=s->next;
+else if(condition==0)
+  s=s->next;
+  else if(condition==1)                                 /*If condition is reversed swap the nodes*/
+  swap(s,s->next);                                      /*Calling swap function*/ 
+  }
+  s=head;
+  }
+  }
+  /*Bubble sort function ends here*/
+  void print(struct studrecord *s)                      /*Function to print desired output*/
+   {         
+ if(s==NULL)                                            /*If linked list is empty*/ 
+  return;
+ else{
+ if((s->dob.day<10)&&(s->dob.month<10))
+  {printf("%s %02d%02d%04d %d %.2f\n",s->name,s->dob.day,s->dob.month,s->dob.year,s->height,s->weight);} /*To print the sorted dates */
+  else if(s->dob.day<10)
+  printf("%s %02d%d%d %d %.2f\n",s->name,s->dob.day,s->dob.month,s->dob.year,s->height,s->weight);
+  else if(s->dob.month<10)
+  printf("%s %d0%d%d %d %.2f\n",s->name,s->dob.day,s->dob.month,s->dob.year,s->height,s->weight);
+  else 	printf("%s %d%d%d %d %.2f\n",s->name,s->dob.day,s->dob.month,s->dob.year,s->height,s->weight);
+  print(s->next);
+  }
+  /*print function ends here*/
+}
+  void main()                            /*Main Function Starts here*/
+  {               
+  int N;                            /*Declarinf n as number of nodes*/
+  scanf("%d",&N);                   /*Taking value of nodes from user*/
+  struct studrecord *s;
+  s=(struct studrecord *)malloc(sizeof(struct studrecord));
+  s=scan(N);                       /*Calling scan function*/
+  bubblesort(s,N);               /*Calling Bubblesort function */
+  print(s);                              /*Calling print function to print value*/}
+      /*main function ends here*/
+ 
